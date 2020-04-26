@@ -63,9 +63,25 @@ path、fs、querystring、http
   - `const fs=require('fs')`
 - 调用模块的方法
   - fs.readFile()
-  - fs.writeFile()
+  - fs.writeFile()   
+  - ...
 
+### fs模块
 
+- fs.readFile()	--- 异步读取文件
+- fs.writeFile()    --- 异步写入文件
+- fs.readdir()      --- 异步读取文件夹
+
+### path模块
+
+- path.join(__dirname,'文件名');
+  - __dirname 是node内置的全局变量
+  - __dirname表示当前js文件所在的路径（绝对路径）
+
+### querystring
+
+- querystring.parse();  --- 把查询字符串转成对象 
+- querystring.stringify() --- 把对象转成查询字符串
 
 
 
