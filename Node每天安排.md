@@ -77,13 +77,15 @@ path、fs、querystring、http
 - path.join(__dirname,'文件名');
   - __dirname 是node内置的全局变量
   - __dirname表示当前js文件所在的路径（绝对路径）
+- path.extname() ---找文件的后缀：了解
+- path.basename()  ---找文件的文件名；了解 
 
 ### querystring
 
 - querystring.parse();  --- 把查询字符串转成对象 
 - querystring.stringify() --- 把对象转成查询字符串
 
-
+![1587890608957](C:\Users\Yiim\AppData\Local\Temp\1587890608957.png)
 
 ## 第2天
 
