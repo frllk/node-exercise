@@ -4,11 +4,11 @@
 
 ###  初始Node.js
 
-![1587866896878](C:\Users\Yiim\AppData\Local\Temp\1587866896878.png)
+![1587866896878](img\1587866896878.png)
 
 
 
-![1587867826196](C:\Users\Yiim\AppData\Local\Temp\1587867826196.png)
+![1587867826196](img\1587867826196.png)
 
 
 
@@ -34,13 +34,13 @@ Ctrl+c 退出
 
 
 
-![1587881330484](C:\Users\Yiim\AppData\Local\Temp\1587881330484.png)
+![1587881330484](img\1587881330484.png)
 
 
 
 ### 命令行中的快捷键
 
-![1587871094137](C:\Users\Yiim\AppData\Local\Temp\1587871094137.png)
+![1587871094137](img\1587871094137.png)
 
 ### Node内置模块
 
@@ -85,11 +85,142 @@ path、fs、querystring、http
 - querystring.parse();  --- 把查询字符串转成对象 
 - querystring.stringify() --- 把对象转成查询字符串
 
-![1587890608957](C:\Users\Yiim\AppData\Local\Temp\1587890608957.png)
+![1587890608957](img\1587890608957.png)
 
 ## 第2天
 
 http模块，模块化，npm使用
+
+### http模块
+
+#### 搭建服务器的步骤
+
+- 导入http模块
+- 创建 web 服务器实例
+- 为服务器实例绑定 request 事件，监听客户端的请求
+- 启动服务器
+
+```js
+/**
+ * 导入http模块
+ * 创建 web 服务器实例
+ * 为服务器实例绑定 request 事件，监听客户端的请求
+ * 启动服务器
+ */
+const http = require('http');
+const server = http.createServer();
+server.on('request', () => {
+    // 处理客户端请求
+    console.log('你的请求我收到了~~~')
+});
+server.listen(3000, () => {
+    console.log('my server start work');
+})
+```
+
+#### 使用http搭建服务器的问题
+
+- 
+
+
+
+#### URL的组成
+
+http://www.xxx.com:3000/yyy/zzz?id=123
+
+- 协议
+  - http
+  - https
+- 主机地址（找到服务器）
+  - 指向服务器的域名（localhost  永远指向自己的计算机）
+  - 服务器的ip地址（127.0.0.1   永远指向自己的计算机）
+- 端口
+  - 区分服务器上的每个服务的
+  - 可以通过 `netstat -on` 查看已经被占用的端口
+- 文件路径（/api/getbooks   index.html  /a/b/c/xxx.html）
+- 查询字符串部分（Get请求的参数  ）
+
+#### 获取请求相关的信息
+
+```js
+// 注册请求事件，当客户端发来请求的时候，就会触发这个事件
+server.on('request', (req, res) => {
+    // 请求行、头、体
+    // 请求行：请求方式  url
+    // 请求头：...
+    // 请求体：post方式才有请求体，请求体就是客户端提交的数据
+
+    console.log(req.method);//请求方式：GET  POST
+    console.log(req.url);//请求地址： /index.html  /   /api/getbooks
+    /**
+     * 请求的地址                           获取到的url
+     * http://localhost:3000/index.html     index.html
+     * http://localhost:3000                /
+     * http://localhost:3000/api/getbooks   /api/getbooks
+     */
+
+    // 获取请求头  得到一个对象
+    console.log(req.headers);
+
+    // 设置响应头和状态码
+    res.writeHead(200, {
+        'Content-Type': 'text/html;charset=utf-8',
+    });
+    res.end('你的请求我收到了~~~~~~~~~~');
+});
+```
+
+
+
+#### 服务器做出响应
+
+```js
+/**
+ * 1.加载http模块
+ * 2.创建server对象
+ * 3.监听端口，开启服务器
+ * 3.注册server的request事件，准备处理浏览器的请求
+ */
+const http = require('http');
+const server = http.createServer();
+server.listen(3000, () => console.log('my server running'));
+server.on('request', (req, res) => {
+    // req request 请求，获取所有与请求相关的信息
+    // res response 响应，做出响应以及设置和响应相关的内容
+
+    // // 设置响应头
+    // res.setHeader('Content-Type', 'text/plain;charset=utf-8');
+    // res.setHeader('Author', 'frllk');
+    // // 设置响应状态码
+    // res.statusCode = 404;
+
+    // 综合性的设置响应状态码和响应头的方法
+    res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8', 'Author': 'frllk' });
+    // write方法，也可以设置响应体，但是没有做出响应的意思，只是单纯的设置响应体
+    res.write('1234');
+    res.write('5678');
+    res.write('90');
+    // 设置响应体   //做出响应
+    res.end('hello，你的请求我收到了');
+    // 做出响应之后，不能再有其他代码。
+});
+```
+
+#### 案例：图书管理案例
+
+
+
+### npm初步使用
+
+
+
+
+
+### 模块化
+
+
+
+
 
 ## 第3天
 
