@@ -80,7 +80,7 @@ path、fs、querystring、http
 - path.extname() ---找文件的后缀：了解
 - path.basename()  ---找文件的文件名；了解 
 
-### querystring
+### querystring模块
 
 - querystring.parse();  --- 把查询字符串转成对象 
 - querystring.stringify() --- 把对象转成查询字符串
@@ -90,6 +90,9 @@ path、fs、querystring、http
 ## 第2天
 
 http模块，模块化，npm使用
+
+- http模块
+- npm的使用
 
 ### http模块
 
@@ -119,8 +122,6 @@ server.listen(3000, () => {
 ```
 
 #### 使用http搭建服务器的问题
-
-- 
 
 
 
@@ -354,6 +355,7 @@ npm un 模块名 -g
 - 使用nrm
   - `nrm ls`通过这个命令，查看可用的镜像源
   - `nrm use taobao`，切换下载模块的网站为淘宝
+- npm config set registry https://registry.npm.taobao.org
 
 ![1587977826688](C:\Users\Yiim\AppData\Local\Temp\1587977826688.png)
 
@@ -366,6 +368,142 @@ npm un 模块名 -g
 ## 第3天
 
 express框架，写接口、路由
+
+### 模块化
+
+- 什么是模块化
+- 模块化规范
+- node.js中 模块的分类
+- 加载模块
+- 自定义模块的实现（重点）
+- 了解CommonJS规范
+- require()加载模块的机制
+  - 加载自定义模块
+  - 加载核心模块和第三方模块
+
+
+
+### Express
+
+>Express
+>
+>- 介绍
+>- 安装
+>- 搭建服务器的步骤
+>- express提供的新方法
+>- GET接口和POST接口
+>- 获取GET中的请求参数
+>- 获取POST请求提交的数据
+>- 中间件原理
+>- 中间件语法
+>- 中间件初体验（设置响应头）
+>- 中间件开放静态资源
+>- 中间件接收POST请求体
+>- 中间件返回404页面
+
+
+
+#### express提供的新方法
+
+```js
+/**
+ * express 提供的新方法
+ * send()   做出响应，参数是响应体，会自动JSON.stringify()
+ * sendFile()   做出响应  参数是一个文件（绝对）路径，会自动读取文件的内容
+ * json()   专门用于响应json数据的方法
+ * jsonp()  
+ * set()    和res.writeHead()一样 
+ */
+```
+
+
+
+#### get方式接口（带参数）
+
+- 1.查询字符串形式     req.query
+- 2.动态参数(:id)      req.params
+
+
+
+```js
+const express = require('express');
+const path = require('path');
+const app = express();
+app.listen(3006, () => console.log('服务启动了~~~'));
+
+app.get('/test', (req, res) => {
+    let data = require('./books');
+    let query = req.query;
+    data = data.filter(item => item.id == query.id && item.bookname == query.bookname);
+    res.send({
+        status: 200,
+        message: '获取信息成功',
+        data: data
+    })
+});
+app.get('/test/:id', (req, res) => {
+    let data = require(path.join(__dirname, 'books.json'));
+    let params = req.params;
+    data = data.filter(item => item.id == params.id);
+    res.send({
+        status: 200,
+        message: '获取信息成功',
+        data: data
+    })
+});
+app.get('/test/:id/:bookname', (req, res) => {
+    let data = require(path.join(__dirname, 'books.json'));
+    let params = req.params;
+    data = data.filter(item => item.id == params.id && item.bookname == params.bookname);
+    res.send({
+        status: 200,
+        message: '获取信息成功',
+        data: data
+    });
+});
+app.get('/', (req, res) => {
+    res.send('默认信息');
+});
+app.get('*', (req, res) => {
+    res.send('请求了一个不存在的接口');
+});
+
+// http://localhost:3006/test?id=3&bookname=三国演义
+// http://localhost:3006/test?id=3
+http://localhost:3006/test/3/三国演义
+// http://localhost:3006
+// http://localhost:3006/login
+```
+
+
+
+#### 获取POST请求体
+
+- 查询字符串格式的请求体   req.body
+- FormData格式的请求体（multer）
+
+```js
+/**
+ * 获取查询字符串格式的请求体
+ * 1、查询字符串格式的请求体    req.body    使用之前需要配置app.use(express.urlencoded({ extended: false }));
+ * 2、FormData格式的请求体  ---第三方模块 multer
+ */
+// 写接口之前，需要配置
+app.use(express.urlencoded({ extended: false }));
+app.post('/test', (req, res) => {
+    // 使用express提供的 req.body来获取请求体
+    let params = req.body;
+    let data = require('./books');
+    data = data.filter(item => item.id == params.id && item.bookname == params.bookname);
+    res.send({
+        status: 0,
+        message: '获取信息成功',
+        data
+    });
+});
+```
+
+
 
 ## 第4天
 
